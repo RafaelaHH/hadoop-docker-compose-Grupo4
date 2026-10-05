@@ -1,743 +1,530 @@
-# hadoop-docker-compose-Grupo4
+# hadoop-docker-compose - Grupo 4
+
+**Universidad del Valle — LG14: Investigación y Despliegue de un Repositorio Big Data con Docker**
 
 **Integrantes:** Julia Rafaela Herrera Heiden, Rafaela Kiara Marta Puente, Alejandro Vidal
 
 ---
 
-## 1. Repositorio seleccionado
+# 1. Introducción
 
-- **Nombre:** hadoop-docker-compose
-- **URL:** https://github.com/dhzdhd/hadoop-docker-compose
-- **Autor:** dhzdhd
-- **Descripción:** Entorno Big Data contenerizado con Docker Compose que integra Hadoop, HDFS, Spark, Hive, HBase y Pig, con scripts de despliegue para Windows y Linux.
+El presente proyecto tiene como objetivo investigar, desplegar y comprobar el funcionamiento de un repositorio público relacionado con tecnologías Big Data y contenedores Docker.
 
-## 2. Informacion general
+El repositorio seleccionado es **hadoop-docker-compose**, desarrollado por `dhzdhd`, el cual permite desplegar mediante Docker Compose un entorno que integra diferentes tecnologías del ecosistema Big Data, entre ellas Apache Hadoop, HDFS, YARN, MapReduce, HBase, Hive, Pig, Spark y PySpark.
 
-A continuacion se presentan los principales datos del repositorio seleccionado, obtenidos a partir de su informacion publica en GitHub y del historial del proyecto.
+La actividad se desarrolló siguiendo el proceso establecido en la práctica: **encontrar, comprender, desplegar, probar y analizar**.
 
-| Caracteristica | Informacion |
-|---|---|
-| **Nombre** | `hadoop-docker-compose` |
-| **Autor / organizacion** | `dhzdhd` |
-| **Repositorio** | [github.com/dhzdhd/hadoop-docker-compose](https://github.com/dhzdhd/hadoop-docker-compose) |
-| **Fecha de creacion** | 6 de febrero de 2024 |
-| **Ultima actualizacion registrada en GitHub** | 6 de abril de 2025 |
-| **Ultimo push de codigo** | 8 de abril de 2024 |
-| **Estrellas** | 6 |
-| **Forks** | 2 |
-| **Licencia** | No especificada en GitHub |
-| **Tecnologia principal** | Apache Hadoop / HDFS |
+Durante el desarrollo se analizó la documentación y los archivos de configuración del repositorio, especialmente `docker-compose.yaml`, `Dockerfile` y los archivos XML de configuración de Hadoop.
 
-### 2.1 Objetivo del proyecto
+Posteriormente, se ejecutó el entorno mediante Docker Compose y se realizó una prueba funcional sobre HDFS, creando un directorio, almacenando un archivo y consultando posteriormente su contenido.
 
-`hadoop-docker-compose` proporciona un entorno contenerizado basado en **Docker Compose** para desplegar, ejecutar y realizar pruebas con diferentes tecnologias del ecosistema Big Data.
+Finalmente, se comparó el repositorio seleccionado con **Big Data Europe - docker-hadoop**, con el propósito de identificar diferencias en arquitectura, número de contenedores, almacenamiento, procesamiento, persistencia, documentación y caso de uso.
 
-El proyecto integra **Apache Hadoop, HDFS, YARN, Pig, HBase, Hive y Spark** dentro de un unico nodo denominado `master`.
+---
 
-Adicionalmente, contempla la inicializacion opcional de otras herramientas como **ZooKeeper, Mahout y Kafka** mediante el mecanismo `init-extra`.
+# 2. Repositorio seleccionado
 
-> El proyecto esta orientado principalmente al aprendizaje, desarrollo y experimentacion con tecnologias Big Data, proporcionando un entorno integrado que evita instalar individualmente cada herramienta en el sistema anfitrion.
+| Característica           | Información                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **Nombre**               | `hadoop-docker-compose`                                                                               |
+| **URL**                  | https://github.com/dhzdhd/hadoop-docker-compose                                                       |
+| **Autor**                | `dhzdhd`                                                                                              |
+| **Tecnología principal** | Apache Hadoop / HDFS                                                                                  |
+| **Descripción**          | Entorno Big Data contenerizado con Docker Compose que integra Hadoop, HDFS, Spark, Hive, HBase y Pig. |
 
-## 3. Tecnologias utilizadas
+---
 
-El repositorio integra diferentes tecnologias del ecosistema Big Data dentro de un unico entorno contenerizado.
+# 3. Investigación del repositorio
 
-| Tecnologia | Version / uso |
-|---|---|
-| Apache Hadoop | 3.3.6 |
-| HDFS | Incluido con Hadoop 3.3.6 |
-| YARN | Incluido con Hadoop 3.3.6 |
-| Apache Pig | 0.17.0 |
-| Apache HBase | 2.5.7 |
-| Apache Hive | 3.1.3 |
-| Apache Spark | 3.4.1 |
-| PySpark | Instalado mediante `pip` |
-| Docker | Utilizado para ejecutar el entorno contenerizado |
-| Docker Compose | Utilizado mediante `docker-compose.yaml` |
-| Sistema operativo base | Ubuntu (`ubuntu:latest`) |
-| Java | OpenJDK 8 |
-| Apache Derby | Utilizado por Hive para inicializar su esquema de metadatos |
-| Python | Python 3 |
-| Scala | Instalado para el entorno de Spark |
+## 3.1 Información general
 
-### Tecnologia Big Data principal
+El repositorio `hadoop-docker-compose` proporciona un entorno contenerizado para trabajar con diferentes tecnologías del ecosistema Big Data sin necesidad de instalar individualmente cada herramienta en el sistema anfitrión.
 
-La tecnologia principal del proyecto es **Apache Hadoop 3.3.6**, junto con su sistema de archivos distribuido **HDFS** y el gestor de recursos **YARN**.
+Los principales datos identificados son:
 
-Sobre esta base se integran otras herramientas del ecosistema Big Data, como Hive, HBase, Pig y Spark.
+| Característica                  | Información               |
+| ------------------------------- | ------------------------- |
+| Nombre                          | `hadoop-docker-compose`   |
+| Autor                           | `dhzdhd`                  |
+| Fecha de creación               | 6 de febrero de 2024      |
+| Última actualización registrada | 6 de abril de 2025        |
+| Último push de código           | 8 de abril de 2024        |
+| Estrellas                       | 6                         |
+| Forks                           | 2                         |
+| Licencia                        | No especificada en GitHub |
+| Tecnología principal            | Apache Hadoop / HDFS      |
 
-### Docker y Docker Compose
+## 3.2 Objetivo del proyecto
 
-El proyecto utiliza Docker para contenerizar todo el entorno y Docker Compose para gestionar su ejecucion.
+El objetivo principal es proporcionar un entorno Big Data que pueda ser ejecutado mediante Docker Compose.
 
-El archivo `docker-compose.yaml` define un unico servicio denominado `master`, basado en la imagen:
+El proyecto concentra diferentes tecnologías dentro de un único contenedor denominado `master`, entre ellas:
 
-`ghcr.io/dhzdhd/hadoop-docker-compose:v1.2.5`
+- Apache Hadoop.
+- HDFS.
+- YARN.
+- MapReduce.
+- HBase.
+- Hive.
+- Pig.
+- Spark.
+- PySpark.
 
-El archivo Compose utiliza el formato version `3`.
+También contempla herramientas adicionales como ZooKeeper, Mahout y Kafka mediante la inicialización opcional `init-extra`.
 
-### Sistema operativo base
+El proyecto está orientado principalmente al **aprendizaje, desarrollo y experimentación con tecnologías Big Data**.
 
-La imagen se construye a partir de:
+## 3.3 Tecnologías utilizadas
 
-`ubuntu:latest`
+| Tecnología     | Versión / función          |
+| -------------- | -------------------------- |
+| Apache Hadoop  | 3.3.6                      |
+| HDFS           | Incluido en Hadoop         |
+| YARN           | Incluido en Hadoop         |
+| Apache Pig     | 0.17.0                     |
+| Apache HBase   | 2.5.7                      |
+| Apache Hive    | 3.1.3                      |
+| Apache Spark   | 3.4.1                      |
+| PySpark        | Instalado mediante pip     |
+| Docker         | Contenerización            |
+| Docker Compose | Administración del entorno |
+| Ubuntu         | Sistema operativo base     |
+| OpenJDK        | 8                          |
+| Apache Derby   | Metastore de Hive          |
+| Python         | Utilizado por PySpark      |
+| Scala          | Entorno de Spark           |
 
-Por lo tanto, el sistema operativo base utilizado dentro del contenedor es Ubuntu. El Dockerfile no fija una version especifica de Ubuntu.
+## 3.4 Tecnología Big Data principal
 
-### Base de datos
+La tecnología principal es **Apache Hadoop 3.3.6**, principalmente mediante **HDFS** y **YARN**.
 
-El script de inicializacion utiliza **Apache Derby** para crear el esquema de metadatos de Hive mediante:
+HDFS permite almacenar archivos dentro del entorno Hadoop, mientras que YARN administra los recursos utilizados por las aplicaciones y MapReduce permite realizar procesamiento de datos.
 
-`schematool -dbType derby -initSchema`
+Sobre esta base se integran otras herramientas como HBase, Hive, Pig y Spark.
 
-### Lenguajes y herramientas adicionales
+## 3.5 Docker y Docker Compose
 
-El entorno utiliza principalmente Java, Python, Scala, Bash y PowerShell.
+Docker permite ejecutar el entorno dentro de un contenedor, mientras que Docker Compose permite definir y administrar dicho entorno.
 
-Bash se utiliza para los scripts internos del contenedor, mientras que PowerShell se utiliza mediante `run.ps1` para facilitar la ejecucion del proyecto en Windows.
-
-El README original tambien menciona ZooKeeper, Mahout y Kafka como herramientas adicionales que pueden inicializarse mediante `init-extra`.
-
-### 3.4 Base de datos
-
-Durante la inicializacion de Hive se utiliza **Apache Derby** para crear el esquema correspondiente al metastore.
-
-Esto se realiza mediante:
-
-`schematool -dbType derby -initSchema`
-
-Por lo tanto, Derby funciona como base de datos utilizada para la inicializacion del esquema de metadatos de Hive.
-
-### 3.5 Lenguajes utilizados
-
-En el entorno se identificaron principalmente los siguientes lenguajes:
-
-- **Java:** requerido por Hadoop y otras herramientas del ecosistema.
-- **Python:** utilizado en PySpark y otras herramientas del entorno.
-- **Scala:** instalado como parte del entorno utilizado por Spark.
-- **Bash:** utilizado en los scripts internos de inicializacion y configuracion.
-- **PowerShell:** utilizado mediante `run.ps1` para facilitar la ejecucion del proyecto en Windows.
-
-### 3.6 Herramientas adicionales
-
-El README original tambien contempla las siguientes herramientas:
-
-- **ZooKeeper**
-- **Mahout**
-- **Kafka**
-
-Estas herramientas no forman parte de la inicializacion estandar mediante `init`, sino que pueden ser incorporadas mediante la inicializacion opcional:
-
-`init-extra`
-
-> Esto permite diferenciar las tecnologias instaladas y utilizadas en el entorno principal de aquellas disponibles como componentes adicionales.
-
-## 4. Analisis de arquitectura
-
-El repositorio `hadoop-docker-compose` utiliza una arquitectura contenerizada de un solo nodo. Docker Compose define un unico servicio denominado `master`, dentro del cual se encuentran instaladas y configuradas las diferentes tecnologias Big Data utilizadas por el proyecto.
-
-A diferencia de una arquitectura donde cada tecnologia se ejecuta en un contenedor independiente, este proyecto concentra Hadoop, HDFS, YARN, HBase, Hive, Pig, Spark y PySpark dentro del mismo contenedor.
-
-### 4.1 Contenedores
-
-El archivo `docker-compose.yaml` define un unico servicio:
-
-| Contenedor | Funcion |
-|---|---|
-| `master` | Contiene el entorno Hadoop y las herramientas Big Data del proyecto, incluyendo HDFS, YARN, MapReduce, HBase, Hive, Pig, Spark y PySpark. |
-
-Actualmente el repositorio utiliza un unico nodo `master`, tal como se especifica en la documentacion original del proyecto.
-
-### 4.2 Imagen Docker utilizada
-
-El servicio `master` utiliza la siguiente imagen:
+El archivo principal es:
 
 ```text
-ghcr.io/dhzdhd/hadoop-docker-compose:v1.2.5
+docker-compose.yaml
 ```
 
-La imagen se encuentra almacenada en GitHub Container Registry.
-
-El `Dockerfile` del proyecto utiliza como base:
-
-```dockerfile
-FROM ubuntu:latest as base
-```
-
-Por lo tanto, el sistema operativo base utilizado dentro del contenedor es Ubuntu.
-
-Dentro de esta imagen se instalan las principales tecnologias del entorno:
-
-- Apache Hadoop 3.3.6
-- Apache Pig 0.17.0
-- Apache HBase 2.5.7
-- Apache Hive 3.1.3
-- Apache Spark 3.4.1
-- PySpark
-- OpenJDK 8
-- Python 3
-- Scala
-
-### 4.3 Puertos
-
-El archivo `docker-compose.yaml` publica los siguientes puertos:
-
-| Puerto | Uso |
-|---|---|
-| `8088` | Interfaz web del entorno Hadoop |
-| `9000` | Acceso a HDFS mediante `hdfs://master:9000` |
-| `9870` | Interfaz web del entorno Hadoop |
-| `4040` | Puerto publicado para el entorno Spark |
-
-La documentacion original indica que las interfaces web pueden ser accedidas desde:
-
-```text
-http://localhost:8088
-```
-
-y:
-
-```text
-http://localhost:9870
-```
-
-HDFS se encuentra configurado mediante:
-
-```text
-hdfs://master:9000
-```
-
-El archivo `core-site.xml` confirma esta direccion:
-
-```xml
-<property>
-    <name>fs.default.name</name>
-    <value>hdfs://master:9000</value>
-</property>
-```
-
-### 4.4 Volumen
-
-Docker Compose define el siguiente volumen:
-
-```yaml
-volumes:
-  - ./workdir:/workdir
-```
-
-Este volumen relaciona una carpeta del equipo anfitrion con una carpeta dentro del contenedor:
-
-```text
-Host                         Contenedor
-./workdir        <------->   /workdir
-```
-
-Esto permite compartir archivos entre Windows y el contenedor `master`.
-
-Los archivos que se guardan en `/workdir` dentro del contenedor pueden ser accedidos desde la carpeta `workdir` del repositorio en el equipo anfitrion.
-
-La documentacion del proyecto advierte que los datos almacenados directamente en HDFS o HBase no cuentan con persistencia garantizada en la configuracion actual. Por este motivo, se recomienda utilizar `/workdir` para conservar archivos importantes.
-
-### 4.5 Red
-
-El archivo `docker-compose.yaml` no define una red personalizada.
-
-Docker Compose administra la red necesaria para la ejecucion del servicio. Como solamente existe un contenedor, no se presenta una comunicacion entre multiples contenedores.
-
-El nombre `master` se utiliza tambien como nombre del nodo dentro de la configuracion de Hadoop, por ejemplo:
-
-```text
-hdfs://master:9000
-```
-
-### 4.6 Dependencias entre servicios
-
-El proyecto no utiliza `depends_on` dentro del archivo `docker-compose.yaml`.
-
-Esto se debe a que solamente se define un servicio:
+Este archivo define el servicio:
 
 ```text
 master
 ```
 
-Las diferentes tecnologias Big Data no se encuentran separadas en multiples servicios Docker, sino instaladas dentro del mismo contenedor.
-
-Por lo tanto, las dependencias existentes son internas entre las diferentes tecnologias y componentes del entorno.
-
-### 4.7 Variables de entorno
-
-El `Dockerfile` define diferentes variables de entorno para configurar Hadoop, HDFS y YARN.
-
-Entre las principales se encuentran:
+El servicio utiliza la imagen:
 
 ```text
-HADOOP_HOME=/usr/local/hadoop
-HDFS_NAMENODE_USER=root
-HDFS_DATANODE_USER=root
-HDFS_SECONDARYNAMENODE_USER=root
-YARN_NODEMANAGER_USER=root
-YARN_RESOURCEMANAGER_USER=root
+ghcr.io/dhzdhd/hadoop-docker-compose:v1.2.5
 ```
 
-Tambien se modifica la variable `PATH` para permitir la ejecucion de los comandos de Hadoop y de las demas herramientas instaladas.
+La imagen se construye originalmente a partir de:
 
-Estas variables permiten definir la ubicacion de Hadoop y los usuarios utilizados para ejecutar los principales procesos de HDFS y YARN.
-
-### 4.8 Configuracion de HDFS
-
-La configuracion principal de HDFS se encuentra en los archivos:
-
-```text
-config/hadoop/core-site.xml
-config/hadoop/hdfs-site.xml
+```dockerfile
+FROM ubuntu:latest
 ```
 
-El archivo `core-site.xml` establece como sistema de archivos principal:
+## 3.6 Sistema operativo base
 
-```text
-hdfs://master:9000
+El contenedor utiliza **Ubuntu** como sistema operativo base.
+
+El Dockerfile utiliza:
+
+```dockerfile
+FROM ubuntu:latest
 ```
 
-El archivo `hdfs-site.xml` define los directorios utilizados por el NameNode y el DataNode:
+Por lo tanto, las herramientas Big Data se ejecutan dentro de un entorno Linux basado en Ubuntu.
 
-```text
-NameNode:
-file:///home/hadoop/hdfs/namenode
+## 3.7 Base de datos
 
-DataNode:
-file:///home/hadoop/hdfs/datanode
-```
+El proyecto utiliza **Apache Derby** para la inicialización del metastore de Hive.
 
-Tambien establece:
-
-```text
-Factor de replicacion: 3
-Tamano de bloque: 33554432 bytes
-```
-
-El tamano configurado equivale a aproximadamente 32 MiB por bloque.
-
-Aunque el factor de replicacion se encuentra configurado en `3`, el repositorio actualmente utiliza un unico nodo `master`.
-
-### 4.9 MapReduce y YARN
-
-El archivo:
-
-```text
-config/hadoop/mapred-site.xml
-```
-
-establece que MapReduce utiliza YARN como framework de ejecucion:
-
-```xml
-<property>
-    <name>mapreduce.framework.name</name>
-    <value>yarn</value>
-</property>
-```
-
-Por lo tanto, la relacion principal es:
-
-```text
-MapReduce
-    |
-    v
-   YARN
-```
-
-El archivo:
-
-```text
-config/hadoop/yarn-site.xml
-```
-
-habilita el servicio auxiliar:
-
-```text
-mapreduce_shuffle
-```
-
-Este servicio participa en el intercambio de los resultados intermedios generados entre las fases Map y Reduce.
-
-Dentro del entorno Hadoop, YARN utiliza componentes como:
-
-- ResourceManager
-- NodeManager
-
-### 4.10 Configuracion de HBase
-
-La configuracion de HBase se encuentra en:
-
-```text
-config/hadoop/hbase-site.xml
-```
-
-El archivo establece:
-
-```text
-hbase.cluster.distributed=true
-```
-
-por lo que HBase se encuentra configurado para trabajar en modo distribuido.
-
-Tambien define el directorio temporal:
-
-```text
-./tmp
-```
-
-Aunque HBase utiliza configuracion distribuida, el entorno actual del repositorio utiliza solamente un nodo `master`.
-
-### 4.11 Hive y Apache Derby
-
-Apache Hive se encuentra instalado dentro del contenedor y utiliza directorios almacenados en HDFS.
-
-Durante la inicializacion se crean:
-
-```text
-/tmp
-```
-
-y:
-
-```text
-/user/hive/warehouse
-```
-
-El proyecto utiliza Apache Derby para inicializar el esquema del metastore de Hive mediante:
+La inicialización se realiza mediante:
 
 ```bash
 schematool -dbType derby -initSchema
 ```
 
-Por lo tanto, Derby funciona como base de datos utilizada por Hive para su esquema de metadatos.
+Derby se utiliza para almacenar la información correspondiente al esquema de metadatos de Hive.
 
-### 4.12 Archivos principales de configuracion
+## 3.8 Lenguajes utilizados
 
-Los principales archivos utilizados por la arquitectura son:
+Durante el análisis se identificaron principalmente:
 
-| Archivo | Funcion |
-|---|---|
-| `docker-compose.yaml` | Define el servicio `master`, imagen, puertos y volumen. |
-| `Dockerfile` | Define el sistema base, dependencias y tecnologias instaladas. |
-| `config/hadoop/core-site.xml` | Configura el sistema de archivos principal de Hadoop. |
-| `config/hadoop/hdfs-site.xml` | Configura NameNode, DataNode, replicacion y tamano de bloques. |
-| `config/hadoop/mapred-site.xml` | Configura MapReduce para utilizar YARN. |
-| `config/hadoop/yarn-site.xml` | Configura servicios auxiliares de YARN. |
-| `config/hadoop/hbase-site.xml` | Configura Apache HBase. |
-| `config/init` | Inicializa Hadoop, HBase y Hive. |
-| `run.ps1` | Automatiza la ejecucion del entorno en Windows. |
-| `run.sh` | Permite ejecutar el entorno en Linux. |
+- **Java:** utilizado por Hadoop y diferentes componentes del ecosistema.
+- **Python:** utilizado por PySpark.
+- **Scala:** utilizado en el entorno de Spark.
+- **Bash:** utilizado en scripts de inicialización.
+- **PowerShell:** utilizado mediante `run.ps1` para facilitar la ejecución en Windows.
 
-### 4.13 Inicializacion del entorno
+---
 
-En Windows, el proyecto utiliza el script:
+# 4. Análisis de arquitectura
 
-```text
-run.ps1
-```
+## 4.1 Arquitectura general
 
-Su funcionamiento es el siguiente:
+El repositorio utiliza una arquitectura contenerizada de **un solo nodo**.
+
+Docker Compose define un único servicio llamado:
 
 ```text
-run.ps1
-   |
-   v
-docker compose up -d
-   |
-   v
-Inicia el contenedor master
-   |
-   v
-docker exec -it master /bin/bash
-   |
-   v
-Terminal Bash dentro del contenedor
+master
 ```
 
-El comando:
+Dentro de este contenedor se encuentran las diferentes tecnologías Big Data.
 
-```powershell
-docker compose up -d
-```
+Esto significa que no existe un contenedor independiente para cada componente de Hadoop.
 
-crea e inicia el servicio definido en `docker-compose.yaml`.
-
-Luego:
-
-```powershell
-docker exec -it master /bin/bash
-```
-
-abre una terminal Bash interactiva dentro del contenedor `master`.
-
-Una vez dentro del contenedor se debe ejecutar:
-
-```bash
-init
-```
-
-El script `config/init` realiza las siguientes acciones:
-
-1. Reinicia el servicio SSH.
-2. Detiene procesos anteriores de Hadoop y HBase.
-3. Formatea el NameNode de HDFS.
-4. Inicia los procesos principales de Hadoop.
-5. Inicia HBase.
-6. Crea los directorios requeridos por Hive dentro de HDFS.
-7. Inicializa el esquema de Hive utilizando Derby.
-8. Verifica los procesos Java mediante `jps`.
-
-Cuando el usuario ejecuta:
-
-```bash
-exit
-```
-
-se sale del contenedor y `run.ps1` continua ejecutando:
-
-```powershell
-docker compose down
-```
-
-Este comando detiene y elimina el entorno creado por Docker Compose.
-
-### 4.14 Arquitectura interna
-
-La arquitectura general identificada es la siguiente:
+La estructura principal es:
 
 ```text
-Host / Windows
-│
-├── Docker Desktop
-├── Docker Compose
-│
-├── ./workdir
-│       ↕
-│    /workdir
-│
-└── Contenedor master
-    │
-    ├── Apache Hadoop 3.3.6
-    │   │
-    │   ├── HDFS
-    │   │   ├── NameNode
-    │   │   ├── DataNode
-    │   │   └── SecondaryNameNode
-    │   │
-    │   ├── YARN
-    │   │   ├── ResourceManager
-    │   │   └── NodeManager
-    │   │
-    │   └── MapReduce
-    │
-    ├── Apache HBase 2.5.7
-    │
-    ├── Apache Hive 3.1.3
-    │   └── Apache Derby
-    │
-    ├── Apache Pig 0.17.0
-    │
-    ├── Apache Spark 3.4.1
-    │
-    └── PySpark
-
-Puertos publicados:
-├── 8088
-├── 9000
-├── 9870
-└── 4040
+Docker Compose
+      |
+      v
+  Contenedor master
+      |
+      +-- Hadoop 3.3.6
+      |     |
+      |     +-- HDFS
+      |     |    +-- NameNode
+      |     |    +-- DataNode
+      |     |    +-- SecondaryNameNode
+      |     |
+      |     +-- YARN
+      |     |    +-- ResourceManager
+      |     |    +-- NodeManager
+      |     |
+      |     +-- MapReduce
+      |
+      +-- HBase 2.5.7
+      |
+      +-- Hive 3.1.3
+      |     |
+      |     +-- Apache Derby
+      |
+      +-- Pig 0.17.0
+      |
+      +-- Spark 3.4.1
+      |
+      +-- PySpark
 ```
 
-### 4.15 Diagrama de arquitectura
+## 4.2 Contenedor
+
+El proyecto utiliza un único contenedor:
+
+| Contenedor | Función                                                                   |
+| ---------- | ------------------------------------------------------------------------- |
+| `master`   | Ejecuta Hadoop, HDFS, YARN, MapReduce, HBase, Hive, Pig, Spark y PySpark. |
+
+Esta es una diferencia importante respecto a arquitecturas Hadoop donde cada componente puede ejecutarse en diferentes contenedores.
+
+## 4.3 Imagen Docker
+
+El contenedor `master` utiliza:
+
+```text
+ghcr.io/dhzdhd/hadoop-docker-compose:v1.2.5
+```
+
+La imagen tiene como base:
+
+```dockerfile
+ubuntu:latest
+```
+
+Dentro de ella se encuentran instaladas las principales tecnologías del proyecto.
+
+## 4.4 Puertos
+
+Los puertos publicados por Docker Compose son:
+
+| Puerto | Función                                |
+| -----: | -------------------------------------- |
+| `8088` | Interfaz web de YARN / ResourceManager |
+| `9000` | Acceso a HDFS                          |
+| `9870` | Interfaz web de NameNode               |
+| `4040` | Interfaz de aplicaciones Spark         |
+
+La dirección principal de HDFS es:
+
+```text
+hdfs://master:9000
+```
+
+## 4.5 Volumen
+
+El proyecto utiliza:
+
+```yaml
+./workdir:/workdir
+```
+
+Esto significa:
+
+```text
+Equipo anfitrión
+./workdir
+      |
+      | volumen
+      v
+Contenedor master
+/workdir
+```
+
+Este volumen permite compartir archivos entre el sistema anfitrión y el contenedor.
+
+Por ejemplo, el archivo:
+
+```text
+/workdir/datos.txt
+```
+
+puede existir también en la carpeta `workdir` del equipo.
+
+## 4.6 Red
+
+No se define una red personalizada en `docker-compose.yaml`.
+
+Docker Compose administra la red necesaria para ejecutar el servicio.
+
+Debido a que el proyecto utiliza un único contenedor, no existe comunicación entre varios servicios Docker.
+
+## 4.7 Dependencias
+
+El archivo Docker Compose no utiliza `depends_on`.
+
+Esto se debe a que únicamente existe un servicio:
+
+```text
+master
+```
+
+Las relaciones entre Hadoop, HDFS, YARN, HBase, Hive y las demás herramientas ocurren dentro del mismo contenedor.
+
+## 4.8 Variables de entorno
+
+Entre las principales variables utilizadas se encuentran:
+
+```text
+HADOOP_HOME=/usr/local/hadoop
+
+HDFS_NAMENODE_USER=root
+HDFS_DATANODE_USER=root
+HDFS_SECONDARYNAMENODE_USER=root
+
+YARN_NODEMANAGER_USER=root
+YARN_RESOURCEMANAGER_USER=root
+```
+
+Estas variables permiten definir la ubicación de Hadoop y los usuarios utilizados por los principales procesos.
+
+## 4.9 Archivos de configuración
+
+Los principales archivos identificados son:
+
+| Archivo               | Función                                              |
+| --------------------- | ---------------------------------------------------- |
+| `docker-compose.yaml` | Define el servicio Docker, puertos y volumen.        |
+| `Dockerfile`          | Define la imagen y tecnologías instaladas.           |
+| `core-site.xml`       | Configura el sistema de archivos principal.          |
+| `hdfs-site.xml`       | Configura NameNode, DataNode, replicación y bloques. |
+| `mapred-site.xml`     | Configura MapReduce para utilizar YARN.              |
+| `yarn-site.xml`       | Configura YARN.                                      |
+| `hbase-site.xml`      | Configura HBase.                                     |
+| `init`                | Inicializa Hadoop, HBase y Hive.                     |
+| `run.ps1`             | Facilita la ejecución en Windows.                    |
+| `run.sh`              | Facilita la ejecución en Linux.                      |
+
+---
+
+# 5. Diagrama de arquitectura
+
+El siguiente diagrama representa la arquitectura real identificada en el repositorio:
 
 ```mermaid
 flowchart TB
-    HOST["Host / Windows<br/>Docker Desktop + Docker Compose"]
+
+    HOST["Equipo anfitrión<br/>Windows + Docker Desktop"]
+
+    COMPOSE["Docker Compose"]
+
     MASTER["Contenedor master"]
 
-    HOST --> MASTER
+    HADOOP["Apache Hadoop 3.3.6"]
 
-    WORKDIR["./workdir en Windows"]
-    CWORKDIR["/workdir en el contenedor"]
+    HDFS["HDFS"]
+    NN["NameNode"]
+    DN["DataNode"]
+    SNN["SecondaryNameNode"]
 
-    WORKDIR <--> CWORKDIR
-    CWORKDIR --> MASTER
+    YARN["YARN"]
+    RM["ResourceManager"]
+    NM["NodeManager"]
 
-    MASTER --> HADOOP["Apache Hadoop 3.3.6"]
+    MAP["MapReduce"]
 
-    HADOOP --> HDFS["HDFS"]
-    HADOOP --> YARN["YARN"]
-    HADOOP --> MAPREDUCE["MapReduce"]
+    HBASE["HBase 2.5.7"]
 
-    HDFS --> NAMENODE["NameNode"]
-    HDFS --> DATANODE["DataNode"]
-    HDFS --> SECONDARY["SecondaryNameNode"]
+    HIVE["Hive 3.1.3"]
+    DERBY["Apache Derby"]
 
-    YARN --> RM["ResourceManager"]
-    YARN --> NM["NodeManager"]
+    PIG["Pig 0.17.0"]
 
-    MASTER --> HBASE["Apache HBase 2.5.7"]
-    MASTER --> HIVE["Apache Hive 3.1.3"]
-    HIVE --> DERBY["Apache Derby"]
+    SPARK["Spark 3.4.1"]
+    PYSPARK["PySpark"]
 
-    MASTER --> PIG["Apache Pig 0.17.0"]
-    MASTER --> SPARK["Apache Spark 3.4.1"]
-    MASTER --> PYSPARK["PySpark"]
+    WORK["./workdir"]
+    CWORK["/workdir"]
+
+    HOST --> COMPOSE
+    COMPOSE --> MASTER
+
+    WORK <--> CWORK
+    CWORK --> MASTER
+
+    MASTER --> HADOOP
+
+    HADOOP --> HDFS
+    HADOOP --> YARN
+    HADOOP --> MAP
+
+    HDFS --> NN
+    HDFS --> DN
+    HDFS --> SNN
+
+    YARN --> RM
+    YARN --> NM
+
+    MASTER --> HBASE
+    MASTER --> HIVE
+    HIVE --> DERBY
+    MASTER --> PIG
+    MASTER --> SPARK
+    MASTER --> PYSPARK
 
     MASTER --> PORTS["Puertos publicados<br/>8088 | 9000 | 9870 | 4040"]
 ```
 
-La caracteristica principal de esta arquitectura es que las diferentes tecnologias Big Data se encuentran concentradas dentro de un solo contenedor `master`, lo que simplifica el despliegue para entornos de aprendizaje y pruebas, aunque no representa una arquitectura Hadoop multinodo tradicional.
+### Interpretación del diagrama
 
-## 5. Instalación y ejecución (Windows, PowerShell)
+El usuario ejecuta Docker Compose desde el equipo anfitrión. Docker Compose inicia el contenedor `master`.
 
-**Requisitos:** Docker Desktop en ejecución y Git.
+Dentro de `master` se encuentran Hadoop y sus componentes principales:
 
-1. **Clonar**
-   ```powershell
-   git clone https://github.com/dhzdhd/hadoop-docker-compose.git
-   ```
-2. **Entrar**
-   ```powershell
-   cd hadoop-docker-compose
-   ```
-3. **Ver archivos**
-   ```powershell
-   dir
-   ```
-4. **Analizar el compose**
-   ```powershell
-   type docker-compose.yaml
-   ```
-5. **Levantar y entrar al contenedor**
-   ```powershell
-   docker compose up -d
-   docker exec -it master /bin/bash
-   ```
-   Dentro del contenedor:
-   ```bash
-   init
-   ```
-6. **Desde OTRA terminal**
-   ```powershell
-   docker ps
-   ```
+- HDFS.
+- YARN.
+- MapReduce.
 
-Evidencias en [`evidencias/`](evidencias/).
+También se encuentran instaladas herramientas adicionales:
 
-## 6. Prueba funcional HDFS
+- HBase.
+- Hive.
+- Pig.
+- Spark.
+- PySpark.
 
-**Script:** [`scripts/prueba_hdfs.sh`](scripts/prueba_hdfs.sh). Se ejecuta dentro del contenedor.
+El directorio `./workdir` del equipo anfitrión se conecta con `/workdir` dentro del contenedor mediante un volumen.
 
-- `hdfs dfsadmin -report`: Estado de HDFS
-- `hdfs dfs -mkdir -p /prueba_bigdata`: Crear directorio
-- `hdfs dfs -put /workdir/datos.txt /prueba_bigdata/`: Listar
-- `hdfs dfs -cat /prueba_bigdata/datos.txt`: Leer contenido
+---
 
-**Resultado:** el archivo `datos.txt` se almacenó en HDFS y su contenido se leyó correctamente (`Hola Big Data - Grupo 4 - Hadoop en Docker`). El archivo se creó en `/workdir` dentro del contenedor y apareció en la carpeta `workdir` del host, lo que confirma el volumen compartido. Las capturas están en un PDF de evidencias.
+# 6. Comparación con Big Data Europe - docker-hadoop
 
-## 7. Comparacion con docker-hadoop
+Para identificar las diferencias entre ambos proyectos se utilizó como referencia:
 
-Para identificar las diferencias de arquitectura, tecnologias y proposito, se comparo el repositorio seleccionado `dhzdhd/hadoop-docker-compose` con el repositorio de referencia **Big Data Europe - docker-hadoop**.
-
-**Repositorio de referencia:**  
 https://github.com/big-data-europe/docker-hadoop
 
-> El objetivo de la comparacion no es determinar cual proyecto es mejor, sino analizar las diferencias en su arquitectura, configuracion, persistencia, procesamiento y caso de uso.
+El objetivo de la comparación no es determinar cuál proyecto es mejor, sino identificar sus diferencias de arquitectura, configuración, almacenamiento, procesamiento y propósito.
 
-### 7.1 Tabla comparativa
+## 6.1 Tabla comparativa
 
-| Caracteristica | `docker-hadoop` | `hadoop-docker-compose` |
-|---|---|---|
-| **Tecnologia principal** | Apache Hadoop / HDFS | Apache Hadoop / HDFS |
-| **Version de Hadoop** | 3.2.1 | 3.3.6 |
-| **Docker** | Si | Si |
-| **Docker Compose** | Si | Si |
-| **Servicios principales** | 5 servicios principales | 1 servicio |
-| **Arquitectura** | Componentes Hadoop separados en diferentes contenedores | Tecnologias Big Data integradas dentro del contenedor `master` |
-| **Almacenamiento distribuido** | HDFS con NameNode y DataNode separados | HDFS ejecutado dentro del unico nodo `master` |
-| **Procesamiento distribuido** | MapReduce y YARN con ResourceManager y NodeManager separados | MapReduce y YARN ejecutados dentro del mismo contenedor |
-| **Interfaces web** | NameNode, DataNode, ResourceManager, NodeManager e HistoryServer | ResourceManager y NameNode; tambien se publica el puerto de Spark |
-| **Persistencia** | Volumenes Docker para NameNode, DataNode e HistoryServer | HDFS y HBase sin volumenes persistentes; `/workdir` permite conservar archivos en el host |
-| **Configuracion** | Principalmente mediante `hadoop.env` y variables de entorno | Archivos XML, Dockerfile y scripts de inicializacion |
-| **Complejidad de despliegue** | Mayor cantidad de servicios y relaciones entre componentes | Despliegue simplificado mediante un unico contenedor |
-| **Documentacion** | Despliegue, configuracion, interfaces web, WordCount y Docker Swarm | Instalacion en Windows/Linux, inicializacion, acceso a HDFS e interfaces web |
-| **Caso de uso** | Entorno Hadoop contenerizado con componentes separados | Entorno integrado para aprendizaje y pruebas con varias tecnologias Big Data |
+| Característica         | `docker-hadoop`                               | `hadoop-docker-compose`                         |
+| ---------------------- | --------------------------------------------- | ----------------------------------------------- |
+| Tecnología principal   | Apache Hadoop / HDFS                          | Apache Hadoop / HDFS                            |
+| Versión Hadoop         | 3.2.1                                         | 3.3.6                                           |
+| Docker                 | Sí                                            | Sí                                              |
+| Docker Compose         | Sí                                            | Sí                                              |
+| Número de contenedores | 5 principales                                 | 1                                               |
+| Arquitectura           | Componentes separados                         | Componentes integrados en `master`              |
+| Almacenamiento         | HDFS con NameNode y DataNode separados        | HDFS dentro de `master`                         |
+| Procesamiento          | YARN y MapReduce separados                    | YARN y MapReduce dentro de `master`             |
+| Interfaces web         | Varias interfaces independientes              | 8088, 9870 y 4040                               |
+| Persistencia           | Volúmenes Docker para componentes principales | `/workdir` para compartir archivos              |
+| Configuración          | Principalmente mediante `hadoop.env`          | XML, Dockerfile y scripts                       |
+| Complejidad            | Mayor cantidad de servicios                   | Menor cantidad de servicios                     |
+| Documentación          | Hadoop, WordCount, interfaces y Docker Swarm  | Windows/Linux, HDFS, `init` e interfaces        |
+| Caso de uso            | Entorno Hadoop con componentes separados      | Aprendizaje, pruebas y experimentación Big Data |
 
-### 7.2 Diferencias de arquitectura
+## 6.2 Diferencia principal de arquitectura
 
-La principal diferencia se encuentra en la forma en que ambos proyectos organizan los componentes de Hadoop.
+La diferencia más importante es la distribución de los componentes.
 
-`docker-hadoop` define varios servicios especializados:
-
-```text
-docker-hadoop
-├── namenode
-├── datanode
-├── resourcemanager
-├── nodemanager
-└── historyserver
-```
-
-Cada componente se ejecuta en un contenedor independiente y cumple una responsabilidad especifica.
-
-- **NameNode:** administra los metadatos de HDFS.
-- **DataNode:** almacena los bloques de datos.
-- **ResourceManager:** administra los recursos de YARN.
-- **NodeManager:** administra las tareas y recursos correspondientes al nodo.
-- **HistoryServer:** conserva informacion relacionada con la ejecucion de aplicaciones.
-
-En cambio, `hadoop-docker-compose` concentra las tecnologias dentro de un unico contenedor:
+`docker-hadoop` utiliza varios contenedores:
 
 ```text
-hadoop-docker-compose
-└── master
-    ├── Hadoop
-    ├── HDFS
-    ├── YARN
-    ├── MapReduce
-    ├── HBase
-    ├── Hive
-    ├── Pig
-    ├── Spark
-    └── PySpark
+namenode
+datanode
+resourcemanager
+nodemanager
+historyserver
 ```
 
-Por lo tanto, `docker-hadoop` presenta una arquitectura con mayor separacion de responsabilidades a nivel de contenedores, mientras que `hadoop-docker-compose` utiliza una arquitectura mas compacta.
-
-### 7.3 Numero de servicios y contenedores
-
-El archivo `docker-compose.yml` analizado de `docker-hadoop` define cinco servicios principales:
-
-- `namenode`
-- `datanode`
-- `resourcemanager`
-- `nodemanager1`
-- `historyserver`
-
-El servicio `nodemanager1` genera un contenedor denominado `nodemanager`.
-
-Por otro lado, `hadoop-docker-compose` define solamente un servicio:
-
-`master`
-
-Esta diferencia permite observar dos estrategias distintas de despliegue: separacion de componentes frente a integracion dentro de un unico contenedor.
-
-### 7.4 Almacenamiento distribuido
-
-Ambos proyectos utilizan **HDFS** como sistema de archivos.
-
-En `docker-hadoop`, los principales componentes de HDFS se encuentran separados:
+Mientras que `hadoop-docker-compose` utiliza:
 
 ```text
-NameNode
-   |
-   v
-DataNode
+master
 ```
 
-Ademas, el proyecto define volumenes Docker para conservar informacion:
+y dentro de este contenedor concentra:
+
+```text
+Hadoop
+HDFS
+YARN
+MapReduce
+HBase
+Hive
+Pig
+Spark
+PySpark
+```
+
+Por lo tanto, `docker-hadoop` presenta una mayor separación de responsabilidades, mientras que `hadoop-docker-compose` prioriza la simplicidad del despliegue.
+
+## 6.3 Almacenamiento
+
+Ambos utilizan HDFS.
+
+En `docker-hadoop`, NameNode y DataNode se encuentran en diferentes contenedores y existen volúmenes para conservar información.
+
+En `hadoop-docker-compose`, HDFS funciona dentro de `master`.
+
+Aunque `hdfs-site.xml` establece un factor de replicación de `3`, el entorno utiliza actualmente un único nodo, por lo que no existen tres DataNodes independientes.
+
+## 6.4 Procesamiento
+
+Ambos proyectos utilizan Hadoop MapReduce y YARN.
+
+En `docker-hadoop`, ResourceManager y NodeManager están separados.
+
+En `hadoop-docker-compose`, ambos funcionan dentro del mismo contenedor `master`.
+
+El repositorio de referencia también incluye una prueba WordCount mediante:
+
+```bash
+make wordcount
+```
+
+## 6.5 Persistencia
+
+`docker-hadoop` utiliza volúmenes Docker para componentes como:
 
 ```text
 hadoop_namenode
@@ -745,222 +532,94 @@ hadoop_datanode
 hadoop_historyserver
 ```
 
-En `hadoop-docker-compose`, HDFS se ejecuta dentro del contenedor `master` y utiliza:
-
-`hdfs://master:9000`
-
-como direccion principal.
-
-El archivo `hdfs-site.xml` establece un factor de replicacion de `3`. Sin embargo, el despliegue actual solamente cuenta con un DataNode, por lo que no existen tres DataNodes independientes donde distribuir fisicamente esas replicas.
-
-### 7.5 Procesamiento distribuido
-
-`docker-hadoop` separa los principales componentes de YARN en distintos contenedores:
-
-- ResourceManager
-- NodeManager
-
-Su README tambien incluye una prueba de procesamiento mediante:
-
-```bash
-make wordcount
-```
-
-Este comando permite ejecutar un ejemplo clasico de procesamiento de datos utilizando Hadoop.
-
-En `hadoop-docker-compose`, MapReduce tambien esta configurado para utilizar YARN, pero tanto ResourceManager como NodeManager se ejecutan dentro del mismo contenedor `master`.
-
-Por lo tanto, ambos proyectos permiten utilizar los mecanismos de procesamiento de Hadoop, aunque organizan sus componentes de manera diferente.
-
-### 7.6 Interfaces web
-
-`docker-hadoop` documenta interfaces web independientes para varios de sus componentes:
-
-| Componente | Puerto |
-|---|---:|
-| NameNode | `9870` |
-| HistoryServer | `8188` |
-| DataNode | `9864` |
-| NodeManager | `8042` |
-| ResourceManager | `8088` |
-
-En `hadoop-docker-compose`, las principales interfaces publicadas son:
-
-| Componente | Acceso |
-|---|---|
-| YARN ResourceManager | `http://localhost:8088` |
-| HDFS NameNode | `http://localhost:9870` |
-| HDFS | `hdfs://master:9000` |
-| Spark | Puerto `4040` cuando existe una aplicacion Spark activa |
-
-Esto muestra que `docker-hadoop` expone interfaces independientes para una mayor cantidad de componentes.
-
-### 7.7 Persistencia
-
-Una de las diferencias mas importantes se encuentra en la persistencia de datos.
-
-`docker-hadoop` define volumenes Docker:
-
-```text
-hadoop_namenode:/hadoop/dfs/name
-hadoop_datanode:/hadoop/dfs/data
-hadoop_historyserver:/hadoop/yarn/timeline
-```
-
-Estos volumenes permiten conservar informacion utilizada por NameNode, DataNode e HistoryServer aunque los contenedores sean recreados.
-
-En cambio, `hadoop-docker-compose` no define volumenes persistentes para HDFS o HBase.
-
-El proyecto utiliza:
+En cambio, `hadoop-docker-compose` utiliza:
 
 ```text
 ./workdir:/workdir
 ```
 
-para compartir archivos entre el contenedor y el sistema anfitrion.
+para compartir archivos con el equipo anfitrión.
 
-Por esta razon, `/workdir` debe utilizarse para conservar archivos importantes fuera del ciclo de vida del contenedor.
+Por ello, los archivos importantes que se quieran conservar pueden mantenerse en `workdir`.
 
-### 7.8 Configuracion
+## 6.6 Complejidad
 
-`docker-hadoop` centraliza gran parte de su configuracion mediante:
+`docker-hadoop` presenta mayor complejidad debido a la existencia de varios servicios y relaciones entre ellos.
 
-`hadoop.env`
+`hadoop-docker-compose` simplifica el despliegue porque utiliza un único contenedor.
 
-Las variables definidas en este archivo pueden transformarse en propiedades correspondientes a archivos de configuracion como:
+Esta característica lo hace apropiado para aprendizaje y experimentación, aunque no representa un clúster Hadoop multinodo tradicional.
 
-- `core-site.xml`
-- `hdfs-site.xml`
-- `yarn-site.xml`
-- `mapred-site.xml`
-- `httpfs-site.xml`
-- `kms-site.xml`
+## 6.7 Conclusión de la comparación
 
-En cambio, `hadoop-docker-compose` incluye directamente archivos XML dentro de:
+Los dos repositorios permiten trabajar con Hadoop mediante Docker, pero utilizan enfoques diferentes.
 
-[`config/hadoop/`](config/hadoop/)
+`docker-hadoop` separa los componentes principales en distintos contenedores, mientras que `hadoop-docker-compose` concentra varias tecnologías Big Data en un único contenedor `master`.
 
-entre ellos:
+Por lo tanto, la diferencia principal está en el propósito y la arquitectura: el primero permite observar una separación más clara de los componentes Hadoop, mientras que el segundo facilita el despliegue y la experimentación con diferentes tecnologías Big Data.
 
-- [`core-site.xml`](config/hadoop/core-site.xml)
-- [`hdfs-site.xml`](config/hadoop/hdfs-site.xml)
-- [`mapred-site.xml`](config/hadoop/mapred-site.xml)
-- [`yarn-site.xml`](config/hadoop/yarn-site.xml)
-- [`hbase-site.xml`](config/hadoop/hbase-site.xml)
+---
 
-Tambien utiliza scripts como:
+# 7. Prueba funcional HDFS
 
-- [`init`](scripts/init)
-- [`run.ps1`](scripts/run.ps1)
-- [`run.sh`](scripts/run.sh)
+La prueba funcional se realizó directamente sobre HDFS.
 
-para inicializar y administrar el entorno.
+## 7.1 Verificar HDFS
 
-### 7.9 Complejidad de despliegue
-
-`docker-hadoop` presenta una arquitectura mas amplia debido a que utiliza varios servicios especializados y relaciones entre ellos.
-
-Por ejemplo, componentes como DataNode, ResourceManager y NodeManager requieren que otros servicios se encuentren disponibles antes de iniciar correctamente.
-
-Por otro lado, `hadoop-docker-compose` simplifica el despliegue al concentrar las tecnologias dentro de un unico contenedor `master`.
-
-Esto facilita su utilizacion en actividades de aprendizaje y experimentacion, aunque reduce la separacion entre los distintos componentes del ecosistema Hadoop.
-
-### 7.10 Documentacion
-
-Ambos repositorios proporcionan documentacion suficiente para comprender su ejecucion, aunque su enfoque es diferente.
-
-`docker-hadoop` documenta:
-
-- despliegue mediante Docker Compose;
-- ejecucion de un ejemplo WordCount;
-- despliegue mediante Docker Swarm;
-- acceso a interfaces web;
-- configuracion mediante variables de entorno.
-
-`hadoop-docker-compose` documenta:
-
-- instalacion y ejecucion en Windows y Linux;
-- inicializacion mediante `init`;
-- acceso a HDFS;
-- acceso a interfaces web;
-- utilizacion de `/workdir`;
-- problemas frecuentes y posibles soluciones.
-
-### 7.11 Caso de uso
-
-`docker-hadoop` esta orientado principalmente al despliegue de un entorno Hadoop contenerizado donde los componentes principales se encuentran separados en distintos servicios Docker.
-
-Esta arquitectura permite observar con mayor claridad la division de responsabilidades entre los componentes de Hadoop.
-
-`hadoop-docker-compose`, en cambio, proporciona un entorno integrado que incorpora:
-
-- Hadoop
-- HDFS
-- YARN
-- HBase
-- Hive
-- Pig
-- Spark
-- PySpark
-
-dentro de un unico nodo `master`.
-
-Por esta razon, su enfoque resulta adecuado para aprendizaje, experimentacion y pruebas con distintas tecnologias Big Data.
-
-### 7.12 Conclusion de la comparacion
-
-La comparacion permite identificar dos enfoques diferentes para desplegar Hadoop mediante Docker.
-
-`docker-hadoop` utiliza una arquitectura con mayor separacion de componentes a nivel de contenedores, distribuyendo servicios como NameNode, DataNode, ResourceManager, NodeManager y HistoryServer. Ademas, utiliza volumenes Docker para proporcionar persistencia a diferentes componentes del entorno.
-
-Por otro lado, `hadoop-docker-compose` concentra Hadoop y diferentes tecnologias complementarias dentro de un unico contenedor `master`, simplificando el despliegue e incorporando herramientas adicionales como HBase, Hive, Pig y Spark.
-
-> La comparacion no busca determinar cual repositorio es mejor. `docker-hadoop` representa de manera mas clara la separacion de servicios de Hadoop, mientras que `hadoop-docker-compose` ofrece un entorno mas compacto orientado al aprendizaje y experimentacion con diferentes tecnologias Big Data.
-
-## 8. Estructura del repositorio
-
-```
-hadoop-docker-compose-Grupo4/
-├── config/
-│   ├── hadoop/
-│   │   ├── core-site.xml
-│   │   ├── hbase-site.xml
-│   │   ├── hdfs-site.xml
-│   │   ├── mapred-site.xml
-│   │   └── yarn-site.xml
-│   ├── docker-compose.yaml
-│   ├── Dockerfile
-│   └── README.md
-├── diagrama/
-│   ├── Apache Hadoop Data-2026-10-04-221317.png
-│   └── arquitectura.md
-├── evidencias/
-│   └── Evidencias-CapturasDePantalla.pdf
-├── scripts/
-│   ├── init
-│   ├── prueba_hdfs.sh
-│   ├── run.ps1
-│   └── run.sh
-├── docker-compose.yaml
-├── Dockerfile
-└── README.md
+```bash
+hdfs dfsadmin -report
 ```
 
-## 9. Conclusion
+## 7.2 Crear un directorio
 
-El desarrollo de esta practica permitio cumplir de manera integral con el proceso de **encontrar, comprender, desplegar, probar y analizar** un repositorio Big Data contenerizado.
+```bash
+hdfs dfs -mkdir -p /prueba_bigdata
+```
 
-El repositorio seleccionado, `hadoop-docker-compose`, utiliza una arquitectura simplificada basada en un unico contenedor denominado `master`. Dentro de este entorno se integran tecnologias como **Apache Hadoop, HDFS, YARN, MapReduce, HBase, Hive, Pig, Spark y PySpark**, lo que permite disponer de diferentes herramientas Big Data dentro de una misma infraestructura Docker.
+## 7.3 Crear y cargar un archivo
 
-El analisis de archivos como `docker-compose.yaml`, `Dockerfile` y las configuraciones XML de Hadoop permitio comprender como se organiza el entorno, como se configura HDFS, como MapReduce utiliza YARN y como se integran componentes adicionales como HBase y Hive.
+```bash
+echo "Hola Big Data - Grupo 4 - Hadoop en Docker" > /workdir/datos.txt
 
-Durante la implementacion practica se comprobo que el proyecto podia desplegarse correctamente mediante Docker Compose. La ejecucion de `jps` permitio verificar la presencia de procesos como **NameNode, DataNode, SecondaryNameNode, ResourceManager, NodeManager y HMaster**, confirmando que los principales componentes del entorno se encontraban activos.
+hdfs dfs -put /workdir/datos.txt /prueba_bigdata/
+```
 
-La prueba funcional realizada sobre HDFS permitio crear un directorio, cargar un archivo, comprobar su almacenamiento y recuperar posteriormente su contenido. De esta manera, se verifico de forma practica el funcionamiento del sistema de archivos utilizado por Hadoop.
+## 7.4 Consultar el archivo
 
-La comparacion con `big-data-europe/docker-hadoop` permitio identificar dos enfoques diferentes de despliegue. Mientras `docker-hadoop` separa los principales componentes de Hadoop en distintos contenedores, `hadoop-docker-compose` concentra diferentes tecnologias dentro de un unico nodo `master`, priorizando un entorno mas compacto y sencillo para aprendizaje y experimentacion.
+```bash
+hdfs dfs -ls /prueba_bigdata
 
-Tambien se identificaron algunas limitaciones del repositorio seleccionado, como el uso de un unico DataNode, la falta de persistencia directa para HDFS y HBase y el formateo de HDFS realizado durante la inicializacion mediante `init`.
+hdfs dfs -cat /prueba_bigdata/datos.txt
+```
 
-> En conclusion, la practica permitio no solo ejecutar un proyecto Big Data mediante Docker, sino tambien comprender su arquitectura, configuracion, funcionamiento y principales diferencias frente a otra alternativa de despliegue basada en Hadoop.
+### Resultado
+
+La prueba permitió comprobar que:
+
+1. HDFS estaba funcionando.
+2. Se pudo crear un directorio.
+3. Se pudo cargar un archivo.
+4. El archivo quedó almacenado en HDFS.
+5. Se pudo recuperar y visualizar su contenido.
+
+Resultado esperado:
+
+```text
+Hola Big Data - Grupo 4 - Hadoop en Docker
+```
+
+---
+
+# 8. Conclusión
+
+La práctica permitió completar el proceso de **encontrar, comprender, desplegar, probar y analizar** un repositorio relacionado con Big Data.
+
+El repositorio seleccionado utiliza Docker Compose para desplegar un entorno basado principalmente en Apache Hadoop 3.3.6 y HDFS, integrando además herramientas como YARN, MapReduce, HBase, Hive, Pig, Spark y PySpark.
+
+El análisis de `docker-compose.yaml`, `Dockerfile` y los archivos de configuración permitió identificar que el proyecto utiliza un único contenedor denominado `master`, dentro del cual se ejecutan los principales componentes.
+
+La prueba funcional sobre HDFS permitió crear un directorio, cargar un archivo y recuperar su contenido, comprobando el funcionamiento del sistema de archivos.
+
+Finalmente, la comparación con `docker-hadoop` permitió identificar que ambos proyectos utilizan Hadoop y Docker, pero presentan arquitecturas diferentes. `docker-hadoop` separa los principales componentes en distintos contenedores, mientras que `hadoop-docker-compose` concentra las tecnologías en un único contenedor.
+
+Por sus características, el repositorio seleccionado resulta apropiado para actividades de aprendizaje, experimentación y pruebas con diferentes tecnologías del ecosistema Big Data.
