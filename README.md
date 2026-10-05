@@ -922,18 +922,29 @@ Por otro lado, `hadoop-docker-compose` concentra Hadoop y diferentes tecnologias
 
 ```
 hadoop-docker-compose-Grupo4/
-├── README.md
+├── config/
+│   ├── hadoop/
+│   │   ├── core-site.xml
+│   │   ├── hbase-site.xml
+│   │   ├── hdfs-site.xml
+│   │   ├── mapred-site.xml
+│   │   └── yarn-site.xml
+│   ├── docker-compose.yaml
+│   ├── Dockerfile
+│   └── README.md
+├── diagrama/
+│   ├── Apache Hadoop Data-2026-10-04-221317.png
+│   └── arquitectura.md
+├── evidencias/
+│   └── Evidencias-CapturasDePantalla.pdf
+├── scripts/
+│   ├── init
+│   ├── prueba_hdfs.sh
+│   ├── run.ps1
+│   └── run.sh
 ├── docker-compose.yaml
 ├── Dockerfile
-├── scripts/
-│   ├── prueba_hdfs.sh
-│   ├── run.sh
-│   └── run.ps1
-├── diagrama/
-│   └── arquitectura.png
-└── evidencias/
-    ├── datos.txt
-    └── Evidencias-CapturasDePantalla.pdf
+└── README.md
 ```
 
 ## 9. Conclusion
